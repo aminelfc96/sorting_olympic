@@ -25,13 +25,13 @@ def draw_graph(title):
     plt.legend()
     plt.savefig(f"{title}.png", dpi=300)
     clear_data()
-    return plt
+    return plt.show
 
 
 def plot_and_save():
     threads = []
     for plot in plots:
-        threads.append(Thread(target=plot.show))
+        threads.append(Thread(target=plot))
     for thread in threads:
         thread.start()
 
