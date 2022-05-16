@@ -1,134 +1,131 @@
-from random import randint
 from time import perf_counter
-from main import insertion_sort, quick_sort, radix_sort_counting
-import matplotlib.pyplot as plt
 from datetime import datetime
 from threading import Thread
 
-time = {"insertion_sort": [], "quick_sort": [], "radix_sort_counting": []}
-elements = []
-plots = []
+# Local imports
+from generator import array_generator
+from main import insertion_sort, quick_sort, bubble_sort, radix_sort_counting
+from graph import graph_plotter
+
+performance = {
+    insertion_sort.__name__: {
+        'time': [],
+        'size': [],
+    },
+    quick_sort.__name__: {
+        'time': [],
+        'size': [],
+    },
+    bubble_sort.__name__: {
+        'time': [],
+        'size': [],
+    },
+    radix_sort_counting.__name__: {
+        'time': [],
+        'size': [],
+    },
+}
 
 
-def clear_data():
-    for key in time:
-        time[key].clear()
-    elements.clear()
+def array_size(SIZE: str):
+    """INDEX FOR ARRAY SIZES:
+        S_MIN = 3
+        S_MAX = 21
+        S_STEP = 3
+
+        M_MIN = 100
+        M_MAX = 1001
+        M_STEP = 100
+
+        L_MIN = 100_000
+        L_MAX = 200_001
+        L_STEP = 10_000
+    """
+
+    S_MIN = 3
+    S_MAX = 21
+    S_STEP = 1
+
+    M_MIN = 100
+    M_MAX = 1001
+    M_STEP = 1
+
+    L_MIN = 100_000
+    L_MAX = 200_001
+    L_STEP = 1
+
+    if SIZE.upper() == "S":
+        small = array_generator(S_MIN, S_MAX, S_STEP)
+        return small
+    if SIZE.upper() == "M":
+        medium = array_generator(M_MIN, M_MAX, M_STEP)
+        return medium
+    if SIZE.upper() == "L":
+        large = array_generator(L_MIN, L_MAX, L_STEP)
+        return large
 
 
-def draw_graph(title):
-    for key in time:
-        plt.plot(elements, time[key], label=key)
-    plt.title(f"Time complexity of different sorting algorithms for {title} array")
-    plt.xlabel("Number of elements")
-    plt.ylabel("Time in seconds")
-    plt.legend()
-    plt.savefig(f"{title}.png", dpi=300)
-    clear_data()
-    return plt.show
+# now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
 
-def plot_and_save():
-    threads = []
-    for plot in plots:
-        threads.append(Thread(target=plot))
-    for thread in threads:
-        thread.start()
+def test_sort(sort_func, arr: list, order: str) -> float:
+    """Function to test the time complexity of different sorting algorithms with different arrays"""
+    s = len(arr)
+    performance[sort_func.__name__]['size'].append(s)
+    print(f"Testing {sort_func.__name__} for {s} elements of order {order}")
 
-
-def save_results(order: str):
-    with open("results.txt", "a") as file:
-        now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        file.write(f"{'#'*35}{now}{'#'*35}\n")
-        for key in time:
-            file.write(f"ALG={key}, SZ={elements}, ODR={order}, TIME={[round(i, 6) for i in time[key]]}\n{'-' * 70}\n")
-
-
-def test_sort(sort_func, arr, order) -> None:
-    print(f"Testing {sort_func.__name__} for {len(arr)} elements of order {order}")
+    # Start timer
     start = perf_counter()
+
+    # Sort array
     sort_func(arr)
+
+    # Stop timer
     end = perf_counter()
+
+    # Calculate time
     print("sorted in", end - start, "seconds")
     print("-" * 40)
-    time[sort_func.__name__].append(end - start)
-
-
-def call(arr, order):
-    test_sort(insertion_sort, arr, order)
-    test_sort(quick_sort, arr, order)
-    test_sort(radix_sort_counting, arr, order)
-
-
-def test_sorted():
-    order = "sorted"
-    for i in range(3, 21, 5):
-        arr = [j for j in range(i)]
-        elements.append(i)
-        call(arr, order)
-
-    for i in range(100, 501, 100):
-        arr = [j for j in range(i)]
-        elements.append(i)
-        call(arr, order)
-
-    for i in range(100_000, 200_001, 10_000):
-        arr = [j for j in range(i)]
-        elements.append(i)
-        call(arr, order)
-
-
-def test_sorted_reversed():
-    order = "reversed"
-    for i in reversed(range(3, 21, 5)):
-        arr = [j for j in range(i)]
-        elements.append(i)
-        call(arr, order)
-
-    for i in reversed(range(100, 501, 100)):
-        arr = [j for j in range(i)]
-        elements.append(i)
-        call(arr, order)
-
-    for i in reversed(range(100_000, 200_001, 10_000)):
-        arr = [j for j in range(i)]
-        elements.append(i)
-        call(arr, order)
-
-
-def test_unsorted():
-    order = "unsorted"
-    for i in range(3, 21, 3):
-        arr = [randint(3, 21) for j in range(i)]
-        elements.append(i)
-        call(arr, order)
-
-    for i in range(100, 1001, 100):
-        arr = [randint(100, 501) for j in range(i)]
-        elements.append(i)
-        call(arr, order)
-
-    for i in range(100_000, 200_001, 10_000):
-        arr = [randint(100_000, 200_001) for j in range(i)]
-        elements.append(i)
-        call(arr, order)
-
-
-def run(order=None, title=None):
-    if order is None or title is None:
-        raise Exception("Order and title must be specified")
-
-    events = {"sorted": test_sorted, "reversed": test_sorted_reversed, "unsorted": test_unsorted}
-    events[order]()
-    draw_graph(title)
-    save_results(order)
+    return end - start
 
 
 def main():
-    run(order="sorted", title="Sorted")
-    run(order="reversed", title="Reversed")
-    run(order="unsorted", title="Unsorted")
-    plot_and_save()
+    """HELP :
+    - run(order, title)
+    - order : "sorted", "reversed", "unsorted"
+    - title : title of the graph
+    """
+    array_type = {
+        "sorted": {"small": array_size("S").sorted(),
+                   "medium": array_size("M").sorted(),
+                   "large": array_size("L").sorted()},
+
+        "reversed": {"small": array_size("S").reversed(),
+                     "medium": array_size("M").reversed(),
+                     "large": array_size("L").reversed()},
+
+        "unsorted": {"small": array_size("S").unsorted(),
+                     "medium": array_size("M").unsorted(),
+                     "large": array_size("L").unsorted()}
+    }
+
+    for order in array_type:
+        for size in array_type[order]:
+            insertion = test_sort(insertion_sort, array_type[order][size], order)
+            quick = test_sort(quick_sort, array_type[order][size], order)
+            bubble = test_sort(bubble_sort, array_type[order][size], order)
+            radix = test_sort(radix_sort_counting, array_type[order][size], order)
+
+            performance[insertion_sort.__name__]['time'].append(insertion)
+            performance[quick_sort.__name__]['time'].append(quick)
+            performance[bubble_sort.__name__]['time'].append(bubble)
+            performance[radix_sort_counting.__name__]['time'].append(radix)
+
+        graph_plotter(performance, order)
+
+        for key in performance:
+            performance[key]['time'].clear()
+            performance[key]["size"].clear()
 
 
 if __name__ == "__main__":
