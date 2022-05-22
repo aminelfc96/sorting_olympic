@@ -15,4 +15,5 @@ class array_generator:
         return self.array[::-1]
 
     def unsorted(self):
-        return shuffle(self.array)
+        shuffle(self.array)
+        return self.array

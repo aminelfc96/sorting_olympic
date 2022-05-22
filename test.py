@@ -1,6 +1,6 @@
 from time import perf_counter
 from datetime import datetime
-from threading import Thread
+import json
 
 # Local imports
 from generator import array_generator
@@ -8,22 +8,10 @@ from main import insertion_sort, quick_sort, bubble_sort, radix_sort_counting
 from graph import graph_plotter
 
 performance = {
-    insertion_sort.__name__: {
-        'time': [],
-        'size': [],
-    },
-    quick_sort.__name__: {
-        'time': [],
-        'size': [],
-    },
-    bubble_sort.__name__: {
-        'time': [],
-        'size': [],
-    },
-    radix_sort_counting.__name__: {
-        'time': [],
-        'size': [],
-    },
+    insertion_sort.__name__: [],
+    quick_sort.__name__: [],
+    bubble_sort.__name__: [],
+    radix_sort_counting.__name__: [],
 }
 
 
@@ -68,10 +56,9 @@ def array_size(SIZE: str):
 # now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
 
-def test_sort(sort_func, arr: list, order: str) -> float:
+def test_sort(sort_func, arr: list, order: str) -> bool:
     """Function to test the time complexity of different sorting algorithms with different arrays"""
     s = len(arr)
-    performance[sort_func.__name__]['size'].append(s)
     print(f"Testing {sort_func.__name__} for {s} elements of order {order}")
 
     # Start timer
@@ -86,7 +73,14 @@ def test_sort(sort_func, arr: list, order: str) -> float:
     # Calculate time
     print("sorted in", end - start, "seconds")
     print("-" * 40)
-    return end - start
+    t = {
+        order: {
+            "time": round(end - start, 6),
+            "size": s}
+    }
+    performance[sort_func.__name__].append(t)
+
+    return True
 
 
 def main():
@@ -111,21 +105,14 @@ def main():
 
     for order in array_type:
         for size in array_type[order]:
-            insertion = test_sort(insertion_sort, array_type[order][size], order)
-            quick = test_sort(quick_sort, array_type[order][size], order)
-            bubble = test_sort(bubble_sort, array_type[order][size], order)
-            radix = test_sort(radix_sort_counting, array_type[order][size], order)
 
-            performance[insertion_sort.__name__]['time'].append(insertion)
-            performance[quick_sort.__name__]['time'].append(quick)
-            performance[bubble_sort.__name__]['time'].append(bubble)
-            performance[radix_sort_counting.__name__]['time'].append(radix)
+            test_sort(insertion_sort, array_type[order][size], order)
+            test_sort(quick_sort, array_type[order][size], order)
+            test_sort(bubble_sort, array_type[order][size], order)
+            test_sort(radix_sort_counting, array_type[order][size], order)
 
-        graph_plotter(performance, order)
-
-        for key in performance:
-            performance[key]['time'].clear()
-            performance[key]["size"].clear()
+    with open('performance.json', 'w') as f:
+        json.dump(performance, f, indent=4)
 
 
 if __name__ == "__main__":
