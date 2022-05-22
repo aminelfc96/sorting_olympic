@@ -1,0 +1,226 @@
+{
+    "insertion_sort": [
+        {
+            "sorted": {
+                "time": 5e-06,
+                "size": 18
+            }
+        },
+        {
+            "sorted": {
+                "time": 7.4e-05,
+                "size": 901
+            }
+        },
+        {
+            "sorted": {
+                "time": 0.017798,
+                "size": 100001
+            }
+        },
+        {
+            "reversed": {
+                "time": 3.4e-05,
+                "size": 18
+            }
+        },
+        {
+            "reversed": {
+                "time": 0.165926,
+                "size": 901
+            }
+        },
+        {
+            "reversed": {
+                "time": 2275.70751,
+                "size": 100001
+            }
+        },
+        {
+            "unsorted": {
+                "time": 0.010239,
+                "size": 18
+            }
+        },
+        {
+            "unsorted": {
+                "time": 0.085876,
+                "size": 901
+            }
+        },
+        {
+            "unsorted": {
+                "time": 1178.902483,
+                "size": 100001
+            }
+        }
+    ],
+    "quick_sort": [
+        {
+            "sorted": {
+                "time": 2.4e-05,
+                "size": 18
+            }
+        },
+        {
+            "sorted": {
+                "time": 0.00178,
+                "size": 901
+            }
+        },
+        {
+            "sorted": {
+                "time": 0.33539,
+                "size": 100001
+            }
+        },
+        {
+            "reversed": {
+                "time": 2.5e-05,
+                "size": 18
+            }
+        },
+        {
+            "reversed": {
+                "time": 0.00332,
+                "size": 901
+            }
+        },
+        {
+            "reversed": {
+                "time": 0.582551,
+                "size": 100001
+            }
+        },
+        {
+            "unsorted": {
+                "time": 4.8e-05,
+                "size": 18
+            }
+        },
+        {
+            "unsorted": {
+                "time": 0.011602,
+                "size": 901
+            }
+        },
+        {
+            "unsorted": {
+                "time": 0.390495,
+                "size": 100001
+            }
+        }
+    ],
+    "bubble_sort": [
+        {
+            "sorted": {
+                "time": 2.1e-05,
+                "size": 18
+            }
+        },
+        {
+            "sorted": {
+                "time": 0.091432,
+                "size": 901
+            }
+        },
+        {
+            "sorted": {
+                "time": 1311.484194,
+                "size": 100001
+            }
+        },
+        {
+            "reversed": {
+                "time": 2.3e-05,
+                "size": 18
+            }
+        },
+        {
+            "reversed": {
+                "time": 0.15214,
+                "size": 901
+            }
+        },
+        {
+            "reversed": {
+                "time": 1540.467933,
+                "size": 100001
+            }
+        },
+        {
+            "unsorted": {
+                "time": 6.9e-05,
+                "size": 18
+            }
+        },
+        {
+            "unsorted": {
+                "time": 0.107516,
+                "size": 901
+            }
+        },
+        {
+            "unsorted": {
+                "time": 1550.186895,
+                "size": 100001
+            }
+        }
+    ],
+    "radix_sort_counting": [
+        {
+            "sorted": {
+                "time": 1.3e-05,
+                "size": 18
+            }
+        },
+        {
+            "sorted": {
+                "time": 0.000443,
+                "size": 901
+            }
+        },
+        {
+            "sorted": {
+                "time": 0.152523,
+                "size": 100001
+            }
+        },
+        {
+            "reversed": {
+                "time": 1.4e-05,
+                "size": 18
+            }
+        },
+        {
+            "reversed": {
+                "time": 0.003514,
+                "size": 901
+            }
+        },
+        {
+            "reversed": {
+                "time": 0.379392,
+                "size": 100001
+            }
+        },
+        {
+            "unsorted": {
+                "time": 2.6e-05,
+                "size": 18
+            }
+        },
+        {
+            "unsorted": {
+                "time": 0.000567,
+                "size": 901
+            }
+        },
+        {
+            "unsorted": {
+                "time": 0.204478,
+                "size": 100001
+            }
+        }
+    ]
+}
