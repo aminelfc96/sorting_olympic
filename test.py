@@ -7,7 +7,7 @@ from generator import array_generator
 from main import insertion_sort, quick_sort, bubble_sort, radix_sort_counting
 from graph import graph_plotter
 
-performance = {
+performance: dict = {
     insertion_sort.__name__: [],
     quick_sort.__name__: [],
     bubble_sort.__name__: [],
@@ -15,7 +15,7 @@ performance = {
 }
 
 
-def array_size(SIZE: str):
+def array_size(SIZE: str) -> array_generator:
     """INDEX FOR ARRAY SIZES:
         S_MIN = 3
         S_MAX = 21
@@ -53,9 +53,6 @@ def array_size(SIZE: str):
         return large
 
 
-# now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-
-
 def test_sort(sort_func, arr: list, order: str) -> bool:
     """Function to test the time complexity of different sorting algorithms with different arrays"""
     s = len(arr)
@@ -85,9 +82,7 @@ def test_sort(sort_func, arr: list, order: str) -> bool:
 
 def main():
     """HELP :
-    - run(order, title)
     - order : "sorted", "reversed", "unsorted"
-    - title : title of the graph
     """
     array_type = {
         "sorted": {"small": array_size("S").sorted(),
@@ -102,7 +97,8 @@ def main():
                      "medium": array_size("M").unsorted(),
                      "large": array_size("L").unsorted()}
     }
-
+    now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    performance['info'] = now
     for order in array_type:
         for size in array_type[order]:
 
